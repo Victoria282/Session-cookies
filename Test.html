@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link href ="style.css" rel ="stylesheet">
+    <title>Тестирование</title>
+	</head>
+	<body style="background-image:url(https://cont.ws/uploads/posts/1534285.jpg);background-size:80%">
+	    <div class="container" style="margin-top:3%;background-color:white;width:600px;box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);border-radius:20px 20px 20px 20px">
+	        <div class="row justify-content-center">
+	            <div class="col-lg-8">
+	                <h2 style="color:#0085e9"> Время на выполнение: </h2>
+	            </div>
+	            <div class="col-lg-2">
+	                <h2 style="color:#0085e9" id = "time"></h2><br/>
+	            </div>         
+	        </div> 
+	        <div class="row justify-content-center">
+        		<form style = "max-width: 50%;" id = "res">
+        		    <div class="row justify-content-center" style="padding-top:5px">
+                	        <ul style = "list-style-type: none; padding:auto 0; max-width: 0%; min-width: 324px;" id = "nums">
+                	            <div class="row justify-content-right" style="padding-top:40px;padding-left:34%">
+                	                <div class="col-lg-2" style="margin-left:5%">
+                	                    <li> <button type = "submit" class="btn btn-primary" style="margin-left:5%;text-align:center">Отправить</button> </li>
+                	                </div>     
+                	            </div>     
+                	        </ul>
+                	   </div>     
+        	        <h5 id = "error" class = "hide" style="color:red; margin-top:10px;font-style: oblique;text-align:center">Форма заполнена неверно!</h5>
+        	    </form>	
+    	    </div>
+        </div>
+
+
+
+	     <script type="text/javascript">
+	    	
+	    	function send() {			
+				let formData = new FormData();
+				for(var i = 0; i < 10; i++)
+					formData.set(i + '', document.querySelector('[name="' + i + '"]').value);
+    				formData.set('answers', '1');		
+    				fetch('Lab6.php', {
+    					method: 'POST',
+    					body: formData,
+    				}).then(
+    				response => response.json()).then(
+    				text => {	
+    					window.location = 'Results.html';
+    				})	
+	    	}	    	
+			
+			let time = 120;
+			let timer = document.getElementById('time');
+			setTimeout(() => timer.innerHTML = (time - time % 60) / 60 + ":" + time % 60, 0);
+			setInterval(() =>  {
+				if(time > 0)
+					time -= 1;
+				else
+					send();				
+				timer.innerHTML = (time - time % 60) / 60 + ":" + time % 60;
+			}, 1000);
+			
+			fetch('Lab6.php').then(
+				response => response.json()).then(
+				text => {	
+					console.log(text);
+					var list = document.getElementById('nums');
+					for (var i = 9; i >= 0; i--) {
+						var input = document.createElement("input");
+						input.setAttribute('style', 'margin:3% 3% 3% 3%;float:right');
+						input.setAttribute('name', '' + i);
+						input.setAttribute('autocomplete', 'off');
+						var sp = document.createElement("span");
+						sp.setAttribute('style', 'margin:4% 4% 4% 4%;float:left');
+						sp.innerHTML = text[i]['first'] + ' * ' + text[i]['second'] + '  =   ';
+						var l = document.createElement("li");
+						l.appendChild(sp);
+						l.appendChild(input);
+						list.prepend(l);
+					}
+				})
+	    	document.getElementById('res').addEventListener('submit', function(event) {	
+	    		document.getElementById('error').classList.add("hide");    			
+				event.preventDefault();
+				var count = 0;
+				for(var i = 0; i < 10; i++)
+					if(/^\d+$/.test(document.querySelector('[name="' + i + '"]').value))
+						count++;
+
+				if(count == 10)
+					send();			
+				else 
+					 document.getElementById('error').classList.remove("hide");
+			});
+			
+	    </script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
+</html>

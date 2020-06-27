@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+	<link href ="style.css" rel ="stylesheet">
+    <title>Результаты</title>
+	</head>
+
+	<body style="background: rgb(255,250,54);
+background: linear-gradient(90deg, rgba(255,250,54,1) 0%, rgba(207,246,62,1) 11%, rgba(171,240,73,1) 25%, rgba(160,230,86,1) 42%, rgba(103,233,89,1) 57%, rgba(25,233,103,1) 70%, rgba(5,217,107,1) 80%, rgba(0,207,122,1) 89%, rgba(1,186,124,1) 100%);">
+	    <div class="container" style="box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.25);padding:5% 5% 5% 5%;background-color:white;margin-top:12%; border-radius: 30px 30px 30px 30px;width:600px">
+	        <div class="row justify-content-center" style="padding:5% 5% 5% 5%">
+	            <h1> Ваши результаты: </h1>
+	        </div>  
+	        <div class="row justify-content-center" style="padding-bottom: 5%;text-align:center">
+	            <div class="col-lg-3">Пользователь: </div>
+	            <div class="col-lg-4" id = "user"></div>
+	        </div>
+    		<div class="row justify-content-center" style="padding-bottom: 5%;text-align:center">
+	            <div class="col-lg-3">Правильных ответов: </div>
+	            <div class="col-lg-4" id = "%"></div>
+	        </div>
+	        <div class="row justify-content-center" style="padding-bottom: 5%;text-align:center">
+	            <div class="col-lg-3">Затраченное время: </div>
+	            <div class="col-lg-4" id = "time"></div>
+	        </div>
+        </div>
+    <script type="text/javascript">
+      
+      
+      fetch('Lab6.php').then(
+        response => response.json()).then(
+        text => { 
+          console.log(text);
+          document.getElementById('%').innerHTML = document.getElementById('%').innerHTML + text['%'];
+          var time = (text['time'] - text['time'] % 60) / 60 + " мин. " + text['time'] % 60 + " с";
+          document.getElementById('time').innerHTML = document.getElementById('time').innerHTML + time;
+          document.getElementById('user').innerHTML = text['user'];
+        })
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
